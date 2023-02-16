@@ -44,7 +44,8 @@ if [ "${output_folder[@]: -1: 1}" != "/" ] ; then
 	output_folder=$output_folder"/"
 fi
 
-files=(`ls $input_folder*.fastq.gz`)
+# files=(`ls $input_folder*.fastq.gz`)
+files=(`find $input_folder -maxdepth 1 -type f -name "*.fastq.gz"`)
 for ((i=0,j=0; i<${#files[@]}; ++i)) ; do
 	declare temp
 	temp=${files[$i]##*/}
@@ -57,6 +58,13 @@ for ((i=0,j=0; i<${#files[@]}; ++i)) ; do
 # 	echo $j" => "$temp" => "${input_ids[j-1]}
 	unset temp
 done
+
+input_count=${#input_ids[@]}
+
+if [[ $input_count -eq 0 ]] ; then
+	echo "Error !!! No input .fastq files. Exiting ... (ERR_CODE: 1001)"
+	exit 1001
+fi
 
 echo "Running with following arguments:"
 echo "script_path = "$script_path
@@ -74,7 +82,6 @@ echo "samtools_cores = "$samtools_cores
 
 echo ""
 
-input_count=${#input_ids[@]}
 ((k=1))
 for input_id in ${input_ids[@]} ; do
 	output_path=$output_folder$input_id"/"

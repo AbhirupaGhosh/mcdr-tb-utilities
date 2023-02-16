@@ -38,7 +38,8 @@ if [ "${output_folder[@]: -1: 1}" != "/" ] ; then
 	output_folder="$output_folder/"
 fi
 
-files=(`ls $input_folder*.vcf`)
+# files=(`ls $input_folder*.vcf`)
+files=(`find $input_folder -maxdepth 1 -type f -name "*.vcf"`)
 for ((i=0,j=0; i<${#files[@]}; ++i)) ; do
 	declare temp
 	temp=${files[$i]##*/}
@@ -52,6 +53,15 @@ for ((i=0,j=0; i<${#files[@]}; ++i)) ; do
 	unset temp
 done
 
+input_count=${#input_ids[@]}
+if [[ $input_count -lt 1 ]] ; then
+	echo "Error !!! No VCF files found in the input_folder ($input_folder). Exiting ... (ERR_CODE: 1001)"
+	exit 1001
+elif [[ $input_count -eq 1 ]] ; then
+	echo "Error !!! Only one VCF file {${input_ids[@]}} found in the input_folder ($input_folder). Cannot merge single VCF. Exiting ... (ERR_CODE: 1001)"
+	exit 1001
+fi
+
 echo "Running with following arguments:"
 echo "script_path = $script_path"
 echo "input_folder = $input_folder"
@@ -62,27 +72,18 @@ echo "bcftools_path = $bcftools_path"
 
 echo ""
 
-input_count=${#input_ids[@]}
-if [[ $input_count -lt 1 ]] ; then
-	echo "Error !!! No VCF files found in the input_folder ($input_folder). Exiting ... (ERR_CODE: 1001)"
-	exit 1001
-elif [[ $input_count -eq 1 ]] ; then
-	echo "Error !!! Only one VCF file {${input_ids[@]}} found in the input_folder ($input_folder). Cannot merge single VCF. Exiting ... (ERR_CODE: 1001)"
-	exit 1001
-else
-	echo "Doing zip and index ..."
-	for ((i=0; i<${#input_ids[@]}; ++i)) ; do
-		$bgzip_path -c "$input_folder${input_ids[$i]}.vcf" > $output_folder${input_ids[$i]}.vcf.gz && $bcftools_path index $output_folder${input_ids[$i]}.vcf.gz
-	done
-	echo "Done zip and index. Exit status $?"
-	echo ""
+echo "Doing zip and index ..."
+for ((i=0; i<${#input_ids[@]}; ++i)) ; do
+	$bgzip_path -c "$input_folder${input_ids[$i]}.vcf" > $output_folder${input_ids[$i]}.vcf.gz && $bcftools_path index $output_folder${input_ids[$i]}.vcf.gz
+done
+echo "Done zip and index. Exit status $?"
+echo ""
 
-	echo "Doing VCF merge ..."
-	declare -a zipped_vcf_files
-	for ((i=0; i<${#input_ids[@]}; ++i)) ; do
-		zipped_vcf_files[$i]=$output_folder${input_ids[$i]}".vcf.gz"
-	done
-	# echo ${zipped_vcf_files[@]}
-	$bcftools_path merge -m all ${zipped_vcf_files[@]} > $output_folder"merged.vcf"
-	echo "Done VCF merge. Exit status $?"
-fi
+echo "Doing VCF merge ..."
+declare -a zipped_vcf_files
+for ((i=0; i<${#input_ids[@]}; ++i)) ; do
+	zipped_vcf_files[$i]=$output_folder${input_ids[$i]}".vcf.gz"
+done
+# echo ${zipped_vcf_files[@]}
+$bcftools_path merge -m all ${zipped_vcf_files[@]} > $output_folder"merged.vcf"
+echo "Done VCF merge. Exit status $?"
