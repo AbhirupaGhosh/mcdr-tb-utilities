@@ -1,7 +1,7 @@
-# mcdr-tb-utilities
+# mcdr-mtb-utilities
 ## Introduction
 
-mcdr-tb-utilities provides script to generate VCF files from *Mycobacterium tuberculosis* WGS data. These VCF files can be used as input for the webserver of [**MCDR-TB**](http://dibresources.jcbose.ac.in/ssaha4/mcdr-tb/) that performs prediction of drug resistance from Variant calling format (VCF) files.
+mcdr-mtb-utilities provides script to generate VCF files from *Mycobacterium tuberculosis* WGS data. These VCF files can be used as input for the webserver of [**mcdr-mtb**](http://dibresources.jcbose.ac.in/ssaha4/mcdr-mtb/) that performs prediction of drug resistance from Variant calling format (VCF) files.
 
 ## Scripts
 
@@ -35,13 +35,13 @@ The installation steps for the different packages/tools are given in the followi
 
   R should be installed in the user system/PC. R installation steps are given in https://cran.r-project.org/.
 
-  Step 2: Install mcdr-tb-utilities
+  Step 2: Install mcdr-mtb-utilities
 
    I. Download the software from GitHub repository
 
    Create a clone of the repository
 
-      git clone https://github.com/AbhirupaGhosh/mcdr-tb-utilities
+      git clone https://github.com/AbhirupaGhosh/mcdr-mtb-utilities
 
   **Note:** Creating a clone of the repository requires git to be installed.
 
@@ -53,7 +53,7 @@ The installation steps for the different packages/tools are given in the followi
 
   Download using wget
 
-    wget https://github.com/AbhirupaGhosh/mcdr-tb-utilities/archive/refs/heads/main.zip
+    wget https://github.com/AbhirupaGhosh/mcdr-mtb-utilities/archive/refs/heads/main.zip
 
     unzip main.zip
 
@@ -63,9 +63,9 @@ The installation steps for the different packages/tools are given in the followi
 
   II. Make the shell scripts executable
 
-      chmod +x INSTALLATION_DIR/mcdr-tb-utilities config.sh variant_call.sh merge_vcf.sh
+      chmod +x INSTALLATION_DIR/mcdr-mtb-utilities config.sh variant_call.sh merge_vcf.sh
 
-  `INSTALLATION_DIR` = Directory where mcdr-tb-utilities is installed
+  `INSTALLATION_DIR` = Directory where mcdr-mtb-utilities is installed
 
   III. update the paths in config.sh (optional)
 
@@ -87,15 +87,15 @@ The installation steps for the different packages/tools are given in the followi
 
 ## Usage
 
-  Initially change the directory to the directory where mcdr-tb-utilities is installed
+  Initially change the directory to the directory where mcdr-mtb-utilities is installed
 
-      cd INSTALLATION_DIR/mcdr-tb-utilities
+      cd INSTALLATION_DIR/mcdr-mtb-utilities
 
 Different operations can be performed by calling the appropriate scripts with two command-line arguments: `INPUT_DIR` and `OUTPUT_DIR`.
 
 `INPUT_DIR` = the path (absolute or relative) of the folder containing the input files.
 
-`OUTPUT_DIR` = the path (absolute or relative) of the folder in which `mcdr-tb-utilities` will store the outputs.
+`OUTPUT_DIR` = the path (absolute or relative) of the folder in which `mcdr-mtb-utilities` will store the outputs.
 
 The executable script, and contents of `INPUT_DIR` and `OUTPUT_DIR` depends on the choice of operations. The different operations are explained below.
 
@@ -137,9 +137,9 @@ Each folder will contain
 
  		 mkdir /home/ss-uac-3/Output_Dir1
 
-  5. Go to the `mcdr-tb-utilities` installation directory
+  5. Go to the `mcdr-mtb-utilities` installation directory
 
- 		 cd /home/ss-uac-3/Documents/mcdr-tb-utilities/
+ 		 cd /home/ss-uac-3/Documents/mcdr-mtb-utilities/
 
   6. Run variant-call.sh
 
@@ -175,9 +175,9 @@ Download the whole genome sequencing FASTQ files of MTB ISOLATE runs, ERR137249 
 
     mkdir /home/ss-uac-3/Output_Dir2
 
-  5. Go to the `mcdr-tb-utilities` installation directory
+  5. Go to the `mcdr-mtb-utilities` installation directory
 
-    cd /home/ss-uac-3/Documents/mcdr-tb-utilities/
+    cd /home/ss-uac-3/Documents/mcdr-mtb-utilities/
 
   6. Run merge-VCF.sh
 
